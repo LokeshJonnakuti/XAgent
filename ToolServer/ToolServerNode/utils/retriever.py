@@ -26,7 +26,7 @@ def ada_retriever(doc_embeddings: list, id2tool:dict, question: str, top_k: int=
     payload = {'input':question}
     payload.update(cfg['payload'])
     
-    response = requests.post(url, json=payload, headers=headers)
+    response = requests.post(url, json=payload, headers=headers, timeout=60)
     query_embedding = np.array(response.json()['data'][0]['embedding'])
 
     similarities = cosine_similarity([query_embedding], doc_embeddings)
@@ -73,7 +73,7 @@ def build_tool_embeddings(tools_json:list[dict]):
         payload = {'input':json.dumps(tool_json)}
         payload.update(cfg['payload'])
         try:
-            response = requests.post(url, json=payload, headers=headers)
+            response = requests.post(url, json=payload, headers=headers, timeout=60)
             response.raise_for_status()
         except Exception as e:
             logger.error(f'Failed to get embedding for tool {tool_json["name"]}! Error: {e}')

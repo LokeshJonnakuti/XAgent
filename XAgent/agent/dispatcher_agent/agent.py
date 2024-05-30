@@ -62,7 +62,7 @@ class DispatcherAgent(GPT4Normal):
             import requests
             import json
 
-            relevant_procedures = requests.get(url, params={'query': query}).json()[
+            relevant_procedures = requests.get(url, params={'query': query}, timeout=60).json()[
                 "procedures"
             ][0]
         except:
