@@ -1,7 +1,7 @@
-import requests
 
 from config import CONFIG
 from core.register import toolwrapper
+from security import safe_requests
 
 
 bing_cfg = CONFIG['bing']
@@ -21,7 +21,7 @@ def bing_search(query:str,region:str = None)->str|list[str]:
     api_key = bing_cfg["api_key"]
     if region is None:
         region = 'en-US'
-    result = requests.get(endpoint, headers={'Ocp-Apim-Subscription-Key': api_key}, params={'q': query, 'mkt': region }, timeout=10)
+    result = safe_requests.get(endpoint, headers={'Ocp-Apim-Subscription-Key': api_key}, params={'q': query, 'mkt': region }, timeout=10)
     result.raise_for_status()
     result = result.json()
 
