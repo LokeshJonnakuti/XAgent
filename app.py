@@ -1,7 +1,6 @@
 import asyncio
 import json
 import os
-import random
 import smtplib
 import threading
 import traceback
@@ -40,6 +39,7 @@ from XAgentServer.models.parameter import InteractionParameter
 from XAgentServer.response_body import ResponseBody, WebsocketResponseBody
 from XAgentServer.server import XAgentServer
 from XAgentServer.utils import AutoReplayUtil, ShareUtil
+import secrets
 
 if not os.path.exists(os.path.join(XAgentServerEnv.base_dir, "logs")):
     os.makedirs(os.path.join(
@@ -911,7 +911,7 @@ class ReplayServer(WebSocketEndpoint):
             interaction_id=self.interaction_id)
         
         await asyncio.to_thread(self.run_replay, interaction)
-        await asyncio.sleep(random.randint(3, 10))
+        await asyncio.sleep(secrets.SystemRandom().randint(3, 10))
         await self.websocket.send_text(WebsocketResponseBody(status="finished", data=None).to_text())
         print("finished")
         await self.websocket.close()
@@ -988,7 +988,7 @@ class SharedServer(WebSocketEndpoint):
         shared = self.interactionInterface.get_shared_interaction(
             interaction_id=self.interaction_id)
         await asyncio.to_thread(self.run_shared, shared)
-        await asyncio.sleep(random.randint(3, 10))
+        await asyncio.sleep(secrets.SystemRandom().randint(3, 10))
         await self.websocket.send_text(WebsocketResponseBody(status="finished", data=None).to_text())
         print("finished")
         await self.websocket.close()

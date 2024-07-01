@@ -1,13 +1,13 @@
 import os
 import json
 import openai
-import random
 import logging
 
 from copy import deepcopy
 from config import CONFIG
 from typing import List,Dict,Any
 from tenacity import wait_random_exponential,stop_after_attempt,retry
+import secrets
 
 logger = logging.getLogger(CONFIG['logger'])
 
@@ -40,7 +40,7 @@ class OpenaiPoolRequest:
         chat_args:dict = deepcopy(self.openai_cfg['chat_args'])
         chat_args.update(kwargs)
         
-        item = random.choice(self.pool)
+        item = secrets.choice(self.pool)
         chat_args['api_key'] = item['api_key']
         if 'organization' in item:
             chat_args['organization'] = item['organization']

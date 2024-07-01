@@ -2,7 +2,6 @@ import abc
 import asyncio
 import json
 import os
-import random
 import shutil
 import time
 import traceback
@@ -14,6 +13,7 @@ from XAgentServer.envs import XAgentServerEnv
 from XAgentServer.models.interaction import InteractionBase
 from XAgentServer.models.shared_interaction import SharedInteractionBase
 from XAgentServer.response_body import WebsocketResponseBody
+import secrets
 
 
 class Util(metaclass=abc.ABCMeta):
@@ -44,7 +44,7 @@ class AutoReplayUtil(metaclass=abc.ABCMeta):
             else:
                 init_data[key] = value
 
-        await asyncio.sleep(random.randint(1, 5))
+        await asyncio.sleep(secrets.SystemRandom().randint(1, 5))
         await websocket.send_text(WebsocketResponseBody(status="start", data=init_data, message="success").to_text())
 
         await AutoReplayUtil.do_auto_replay(websocket, history)
@@ -63,7 +63,7 @@ class AutoReplayUtil(metaclass=abc.ABCMeta):
                     tool_name = inner_props.get("using_tools", {}).get(
                         "tool_name", "") if isinstance(inner_props, dict) else ""
 
-                    await asyncio.sleep(random.randint(1, 5))
+                    await asyncio.sleep(secrets.SystemRandom().randint(1, 5))
                     if tool_name == "subtask_submit":
                         send_data = {
                             "task_id": item.get("task_id", ""),
@@ -93,7 +93,7 @@ class AutoReplayUtil(metaclass=abc.ABCMeta):
                     else:
                         inner_props = None
                     if inner_props is None:
-                        await asyncio.sleep(random.randint(1, 5))
+                        await asyncio.sleep(secrets.SystemRandom().randint(1, 5))
                         send_data = {
                             "task_id": item.get("task_id", ""),
                             "name": item.get("name", ""),
@@ -108,7 +108,7 @@ class AutoReplayUtil(metaclass=abc.ABCMeta):
                         await asyncio.sleep(5)
             
             if cache_list:
-                await asyncio.sleep(random.randint(1, 5))
+                await asyncio.sleep(secrets.SystemRandom().randint(1, 5))
                 sub_send_data = {
                     "data": [{**r_, "inner": []}for r_ in cache_list],
                     "current": cache_list[0]["task_id"],

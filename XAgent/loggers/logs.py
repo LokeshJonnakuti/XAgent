@@ -1,7 +1,6 @@
 """Logging module for Auto-GPT."""
 import logging
 import os
-import random
 import re
 import time
 import json
@@ -13,6 +12,7 @@ import uuid
 from colorama import Fore, Style
 
 from XAgent.utils import Singleton, TaskSaveItem
+import secrets
 
 class JsonFileHandler(logging.FileHandler):
     def __init__(self, filename, mode="a", encoding=None, delay=False):
@@ -214,7 +214,7 @@ class TypingConsoleHandler(logging.StreamHandler):
                 print(word, end="", flush=True)
                 if i < len(words) - 1:
                     print(" ", end="", flush=True)
-                typing_speed = random.uniform(min_typing_speed, max_typing_speed)
+                typing_speed = secrets.SystemRandom().uniform(min_typing_speed, max_typing_speed)
                 time.sleep(typing_speed)
                 # type faster after each word
                 min_typing_speed = min_typing_speed * 0.95
