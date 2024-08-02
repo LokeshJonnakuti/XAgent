@@ -22,7 +22,7 @@ class WebEnv(BaseEnv):
         self.headers = {
             "User-Agent":self.web_cfg['user_agent']
         }
-        self.client = httpx.AsyncClient(headers=self.headers,verify=False,timeout=30.0,http2=True)
+        self.client = httpx.AsyncClient(headers=self.headers,verify=True, timeout=30.0,http2=True)
 
     def _check_url_valid(self,url:str):
         local_prefixes = [
