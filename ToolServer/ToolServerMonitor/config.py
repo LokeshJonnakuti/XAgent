@@ -6,7 +6,7 @@ from typing import Dict,Any
 class ManagerConfig:
     def __init__(self,
                  config_file_path="./assets/config.yml",):
-        self.cfg:Dict = yaml.load(open(config_file_path,"r",encoding="utf-8").read(),Loader=yaml.FullLoader)
+        self.cfg:Dict = yaml.load(open(config_file_path,"r",encoding="utf-8").read(),Loader=yaml.SafeLoader)
         
         for k in os.environ.keys():
             if k in self.cfg:
