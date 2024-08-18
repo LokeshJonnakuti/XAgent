@@ -22,12 +22,12 @@ class FunctionManager:
         
         for cfg_file in glob.glob(os.path.join(self.function_cfg_dir,'*.yaml')) + glob.glob(os.path.join(self.function_cfg_dir,'*.yml')):
             with open(cfg_file,'r') as f:
-                function_cfg = yaml.load(f,Loader=yaml.FullLoader)
+                function_cfg = yaml.load(f,Loader=yaml.SafeLoader)
             self.function_cfgs[function_cfg['function']['name']] = function_cfg
 
         for cfg_file in glob.glob(os.path.join(self.pure_function_cfg_dir,'*.yaml')) + glob.glob(os.path.join(self.pure_function_cfg_dir,'*.yml')):
             with open(cfg_file,'r') as f:
-                function_cfg = yaml.load(f,Loader=yaml.FullLoader)
+                function_cfg = yaml.load(f,Loader=yaml.SafeLoader)
             for function in function_cfg['functions']:
                 self.function_cfgs[function['name']] = function
     
