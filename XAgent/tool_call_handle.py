@@ -59,10 +59,10 @@ class ToolServerInterface():
         else:
             raise NotImplementedError('Please use selfhost toolserver')
         logger.typewriter_log("ToolServer connected in", Fore.RED, self.url)
-        response = requests.post(f'{self.url}/get_cookie',)
+        response = requests.post(f'{self.url}/get_cookie',timeout=60)
         self.cookies = response.cookies
     def close(self):
-        requests.post(f'{self.url}/close_session', cookies=self.cookies)
+        requests.post(f'{self.url}/close_session', cookies=self.cookies, timeout=60)
     
     def upload_file(self, file_path)->str:
         url  = f"{self.url}/upload_file"
@@ -95,7 +95,7 @@ class ToolServerInterface():
     
     def download_all_files(self):
         url  = f"{self.url}/download_workspace"
-        response = requests.post(url, cookies=self.cookies,)
+        response = requests.post(url, cookies=self.cookies,timeout=60)
         response.raise_for_status()
         
         save_path = os.path.join(recorder.record_root_dir,'workspace.zip')
@@ -223,7 +223,7 @@ class ToolServerInterface():
             command_result = cache_output["tool_output"]
             response_status_code = cache_output["response_status_code"]
         else:
-            response = requests.post(url, json=payload, cookies=self.cookies)
+            response = requests.post(url, json=payload, cookies=self.cookies, timeout=60)
             response_status_code = response.status_code
             # import pdb; pdb.set_trace()
             # print(response.json())
