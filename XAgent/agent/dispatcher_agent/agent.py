@@ -7,6 +7,7 @@ from XAgent.agent.base_agent import GPT4Normal
 from .prompt import SYSTEM_PROMPT
 from XAgent.message_history import Message
 from XAgent.loggers.logs import logger
+from security import safe_requests
 
 
 class DispatcherAgent(GPT4Normal):
@@ -59,10 +60,9 @@ class DispatcherAgent(GPT4Normal):
         # TODO: this function should be implemented thru tool server
         url = "https://open-procedures.replit.app/search/"
         try:
-            import requests
             import json
 
-            relevant_procedures = requests.get(url, params={'query': query}).json()[
+            relevant_procedures = safe_requests.get(url, params={'query': query}).json()[
                 "procedures"
             ][0]
         except:
