@@ -8,6 +8,7 @@ from typing import Union,Dict,Any
 from core.base import BaseEnv
 from core.register import toolwrapper,get_func_name
 from core.exceptions import OutputNotReady
+from security import safe_command
 
 def read_pipe(pipe:Union[io.StringIO,io.BytesIO],text=True)->Union[str,bytes]:
     """Reading the `subprocess.PIPE` when readable.
@@ -56,8 +57,7 @@ class ShellEnv(BaseEnv):
         self._kill()
         if program is None:
             program = self.shell_program
-        self.running_proc = subprocess.Popen(
-            program, # adding more shells support
+        self.running_proc = safe_command.run(subprocess.Popen, program, # adding more shells support
             stdin=subprocess.PIPE,
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
