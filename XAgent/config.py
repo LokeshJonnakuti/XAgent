@@ -27,12 +27,12 @@ class XAgentConfig(dict):
             return self
     
     def reload(self,config_file='config.yml'):
-        self.__init__(**yaml.load(open(config_file, 'r'), Loader=yaml.FullLoader))
+        self.__init__(**yaml.load(open(config_file, 'r'), Loader=yaml.SafeLoader))
     
     @staticmethod
     def get_default_config(config_file='config.yml'):
         try:
-            cfg = yaml.load(open(config_file, 'r'), Loader=yaml.FullLoader)
+            cfg = yaml.load(open(config_file, 'r'), Loader=yaml.SafeLoader)
         except:
             cfg = {}
         return XAgentConfig(**cfg)
